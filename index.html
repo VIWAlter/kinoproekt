@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section class="block1">
+        <img src="img/1.png" alt="football field" class="field-bg">
+        <img src="img/ball.png" alt="ball" id="ball">
+        <img src="img/player1.png" alt="player 1" id="player1">
+        <img src="img/player2.png" alt="player 2" id="player2">
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+    const ball = document.getElementById('ball');
+    const player1 = document.getElementById('player1');
+    const player2 = document.getElementById('player2');
+    const field = document.querySelector('.field-bg');
+
+    const MIN_MARGIN = 20; 
+    const PLAYER_WIDTH = 50;
+
+    function vwToPx(vw) {
+        const calculated = (vw * window.innerWidth) / 100;
+        // Не позволяем значениям быть меньше минимальных отступов
+        return Math.max(calculated, MIN_MARGIN);
+    }
+
+    // Функция для перевода px в % от высоты поля
+    function pxToFieldPercent(px) {
+        return (px / field.offsetHeight) * 100;
+    }
+
+    // Функция для перевода % от высоты поля в px
+    function fieldPercentToPx(percent) {
+        return (percent / 100) * field.offsetHeight;
+    }
+
+    // Начальные позиции
+    let ballX = vwToPx(50);
+    let ballYPercent = 50;
+    const baseSpeed = 0.35;
+    let ballSpeedX = baseSpeed * window.innerWidth / 100;
+    let ballSpeedY = -baseSpeed * 0.5 * window.innerWidth / 100;
+
+    // Границы (отступ от краев поля)
+    const minYPercent = 25;
+    const maxYPercent = 85;
+
+    // Размеры элементов в % от высоты поля
+    const ballHeightPercent = pxToFieldPercent(ball.offsetHeight);
+    const playerHeightPercent = pxToFieldPercent(player1.offsetHeight);
+
+    let player1YPercent = 30; // Начальная позиция: левый игрок вверху
+    let player2YPercent = 60; // Начальная позиция: правый игрок внизу
+
+    // Состояния игроков (где они находятся)
+    let player1Position = 'top';
+    let player2Position = 'bottom';
+    const playerSpeed = 0.8;
+
+    function updatePositions() {
+        ball.style.left = (ballX / window.innerWidth * 100) + '%';
+        ball.style.top = ballYPercent + '%';
+        
+        player1.style.top = player1YPercent + '%';
+        player2.style.top = player2YPercent + '%';
+    }
+
+    function moveBall() {
+        // Двигаем мяч
+        ballX += ballSpeedX;
+        ballYPercent += ballSpeedY;
+
+        // Адаптивные границы по X
+        const minBallX = Math.max(
+            vwToPx(5), 
+            MIN_MARGIN + PLAYER_WIDTH
+        );
+        
+        const maxBallX = Math.min(
+            vwToPx(75) - PLAYER_WIDTH - ball.offsetWidth,
+            window.innerWidth - MIN_MARGIN - PLAYER_WIDTH - ball.offsetWidth
+        );
+
+        // Границы по Y
+        if (ballYPercent <= minYPercent) {
+            ballYPercent = minYPercent;
+            ballSpeedY = Math.abs(ballSpeedY); // Вниз
+        }
+        if (ballYPercent >= maxYPercent - ballHeightPercent) {
+            ballYPercent = maxYPercent - ballHeightPercent;
+            ballSpeedY = -Math.abs(ballSpeedY); // Вверх
+        }
+
+        // Логика игроков
+        if (ballX <= minBallX) {
+            // Левый игрок бьет
+            ballX = minBallX + 5;
+            
+            // Определяем направление удара в зависимости от позиции игрока
+            if (player1Position === 'top') {
+                // Бьем вниз вправо (к правому игроку внизу)
+                ballSpeedX = baseSpeed * window.innerWidth / 100;
+                ballSpeedY = baseSpeed * 0.3 * window.innerWidth / 100;
+                
+                // Перемещаем игрока в противоположную позицию
+                player1Position = 'bottom';
+            } else {
+                // Бьем вверх вправо (к правому игроку вверху)
+                ballSpeedX = baseSpeed * window.innerWidth / 100;
+                ballSpeedY = -baseSpeed * 0.3 * window.innerWidth / 100;
+                
+                // Перемещаем игрока в противоположную позицию
+                player1Position = 'top';
+            }
+        } 
+        else if (ballX >= maxBallX) {
+            // Правый игрок бьет
+            ballX = maxBallX - 5;
+            
+            // Определяем направление удара в зависимости от позиции игрока
+            if (player2Position === 'top') {
+                // Бьем вниз влево (к левому игроку внизу)
+                ballSpeedX = -baseSpeed * window.innerWidth / 100;
+                ballSpeedY = baseSpeed * 0.3 * window.innerWidth / 100;
+                
+                // Перемещаем игрока в противоположную позицию
+                player2Position = 'bottom';
+            } else {
+                // Бьем вверх влево (к левому игроку вверху)
+                ballSpeedX = -baseSpeed * window.innerWidth / 100;
+                ballSpeedY = -baseSpeed * 0.3 * window.innerWidth / 100;
+                
+                // Перемещаем игрока в противоположную позицию
+                player2Position = 'top';
+            }
+        }
+
+        // Плавное движение игроков к целевым позициям
+        if (player1Position === 'top') {
+            player1YPercent += (30 - player1YPercent) * playerSpeed * 0.1;
+        } else {
+            player1YPercent += (60 - player1YPercent) * playerSpeed * 0.1;
+        }
+
+        if (player2Position === 'top') {
+            player2YPercent += (30 - player2YPercent) * playerSpeed * 0.1;
+        } else {
+            player2YPercent += (60 - player2YPercent) * playerSpeed * 0.1;
+        }
+
+        updatePositions();
+    }
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            updatePositions();
+            ballX = vwToPx(50);
+            ballYPercent = 50;
+        }, 100);
+    });
+
+    updatePositions();
+    
+    const animationInterval = setInterval(moveBall, 20);
+});
+        </script>
+    </section>
+    <section class="block2">
+        <img src="img/2.png" alt="Сюжет">
+    </section>
+    <section class="block3">
+        <img src="img/3.jpg" alt="а?">
+    </section>
+    <section class="block4">
+        <img src="img/4.png" alt="Фон" class="block4-bg">
+        <div class="block4-video-container">
+            <video controls class="block4-video">
+                <source src="img/0720.mp4" type="video/mp4">
+                Ваш браузер не поддерживает видео.
+            </video>
+        </div>
+    </section>
+    <section class="block5">
+        <div class="phone-container">
+            <img src="img/телефон.png" alt="Телефон" class="phone">
+            
+            <button class="accept-btn">ПРИНЯТЬ</button>
+        
+        <div class="modal">
+            <div class="modal-content">
+                <p>Тут должен быть текст, но я не помню какой...</p>
+                <button class="close-modal">OK</button>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const acceptBtn = document.querySelector('.accept-btn');
+            const modal = document.querySelector('.modal');
+            const closeModal = document.querySelector('.close-modal');
+            
+            acceptBtn.addEventListener('click', function() {
+                const phone = document.querySelector('.phone');
+                phone.style.animation = 'none';
+                acceptBtn.style.animation = 'none';
+                
+                modal.style.display = 'flex';
+                
+            });
+            
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+        </script>
+    </section>
+    <section class="block6">
+        <div class="content6">
+            <div class="bigtext6" style="border-top: 2px solid rgb(65, 65, 65); border-bottom: 2px solid rgb(65, 65, 65);">СТАРАЙСЯ ЛЕТАТЬ</div>
+            <div class="maincont6">
+                <div class="maincont6left">
+                    <img src="img/12345.png" alt="СТАРАЙСЯ ЛЕТАТЬ">
+                </div>
+                <div class="maincont6right">
+                    <div class="maincont6rightup bigtext6">Референсы</div>
+                    <div class="maincont6rightdown">
+                        <div class="films" style="border-right: 2px solid rgb(65, 65, 65)">
+                            <img src="img/600x900.png" alt="1film">
+                            <p>МАЛЫШКА НА МИЛЛИОН <br> (2004) </p>
+                        </div>
+                        <div class="films">
+                            <img src="img/Geograf_poster_700x1000.jpg" alt="2film">
+                            <p>ГЕОГРАФ ГЛОБУС ПРОПИЛ <br> (2013) </p>  
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="maincontbottom6">
+                <div class="maincontbot6"  style="line-height: 2.5vw;">
+                    КУПЛЮ ГАРАЖ <br> 22-58-33 <br> ДОРОГО!!!!
+                </div>
+                <div class="maincontbot6" style="border: none;">
+                    <a href="https://t.me/obshyplan"><img src="img/logo.jpg" alt="logo"></a>
+                    <div class="verytext">
+                        <div>Кто такие "Общий план"?</div>
+                        <div style="text-align: left;">Скандалы</div>
+                        <div style="text-align: center; width: 80%;">Интриги</div>
+                        <div style="text-align: right;">Расследования</div>
+                    </div>
+                </div>
+                <div class="maincontbot6" style="line-height: 2vw;">
+                    СРОЧНО ИЩЕМ ХУДОЖНИКА 
+                    <br> ПО КОСТЮМАМ, КОТОРЫЙ 
+                    <br> БУДЕТ РАБОТАТЬ ЗА ЕДУ!
+                    <br> 8(908)314-13-69
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="block7">
+        <div class="block7left">
+            <div class="block7leftup">
+                На что пойдут средства?
+            </div>
+            <div class="block7leftbot">
+                <button class="toggle-answer" data-answer="answer1">
+                    <p>1. Места, в которых будет<br> производиться съемка</p>
+                </button>
+                <button class="toggle-answer" data-answer="answer2">
+                    <p>2. То, во что будут одеты <br> актёры в кадре</p>
+                </button>
+                <button class="toggle-answer" data-answer="answer3">
+                    <p>3. Вещи необходимые <br> актёрам в кадре</p>
+                </button>
+                <button class="toggle-answer" data-answer="answer4">
+                    <p>4. То, без чего <br> кино не будет снято</p>
+                </button>
+            </div>
+        </div>
+        <div class="block7right">
+            <div class="crossword-container">
+                <img id="crosswordBase" src="img/biocrossword.png" alt="cross">
+                <img id="answer1" class="answer-overlay" src="img/biocrossword1.png" alt="answer1">
+                <img id="answer2" class="answer-overlay" src="img/biocrossword2.png" alt="answer2">
+                <img id="answer3" class="answer-overlay" src="img/biocrossword3.png" alt="answer3">
+                <img id="answer4" class="answer-overlay" src="img/biocrossword4.png" alt="answer4">
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const buttons = document.querySelectorAll('.toggle-answer');
+                
+                buttons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const answerId = this.getAttribute('data-answer');
+                        const answerImage = document.getElementById(answerId);
+                        answerImage.classList.toggle('active');
+                    });
+                });
+            });
+        </script>
+    </section>
+    <section class="block8">
+        <img src="img/8.png" alt="а?">
+    </section>
+    
+
+    <div class="paperclip-container">
+        <img src="img/Clippy.png" alt="Скрепка" class="paperclip" id="paperclip">
+        <div class="paperclip-tooltip">Ещё не время...</div>
+    </div>
+
+    <section class="block8_1">
+        <h2>Поддержите наш проект!</h2>
+        <p>Нам очень важна ваша помощь</p>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const paperclip = document.getElementById('paperclip');
+            const paperclipContainer = document.querySelector('.paperclip-container');
+            const block8_1 = document.querySelector('.block8_1');
+            
+            let isBlockVisible = false;
+            let unhappyShown = false;
+            
+            paperclip.addEventListener('click', function() {
+                if (!isBlockVisible) {
+                alert('Ещё не время...');
+                }
+            });
+            
+            window.addEventListener('scroll', function() {
+                const blockPosition = block8_1.getBoundingClientRect();
+                const scrollPosition = window.scrollY + window.innerHeight;
+                
+                if (blockPosition.top < window.innerHeight && blockPosition.bottom > 0) {
+                if (!isBlockVisible) {
+                    isBlockVisible = true;
+                    paperclipContainer.style.bottom = '50%';
+                    paperclipContainer.style.right = '20%';
+                    paperclipContainer.style.transform = 'translate(50%, 50%)';
+                    paperclip.src = 'img/Clippy.png';
+                    unhappyShown = false;
+                }
+                } 
+                // Если проскролили дальше блока
+                else if (window.scrollY > blockPosition.bottom) {
+                if (isBlockVisible && !unhappyShown) {
+                    isBlockVisible = false;
+                    paperclipContainer.style.bottom = '20px';
+                    paperclipContainer.style.right = '20px';
+                    paperclipContainer.style.transform = 'none';
+                    paperclip.src = 'img/Clippysad.png'; 
+                    unhappyShown = true;
+                }
+                }
+                else if (window.scrollY < blockPosition.top) {
+                if (isBlockVisible) {
+                    isBlockVisible = false;
+                    paperclipContainer.style.bottom = '20px';
+                    paperclipContainer.style.right = '20px';
+                    paperclipContainer.style.transform = 'none';
+                    paperclip.src = 'img/Clippy.png';
+                    unhappyShown = false;
+                }
+                }
+            });
+            });
+        </script>
+    </section>
+
+
+
+    <section class="block9">
+        <img src="img/9.png" alt="komanda">
+    </section>
+    <section class="block10">
+        <img src="img/10.png" alt="а?">
+    </section>
+</body>
+</html>
