@@ -76,7 +76,7 @@
 
         // Адаптивные границы по X
         const minBallX = Math.max(
-            vwToPx(5), 
+            vwToPx(15), 
             MIN_MARGIN + PLAYER_WIDTH
         );
         
@@ -315,71 +315,10 @@
     <section class="block8">
         <img src="img/8.png" alt="а?">
     </section>
-    
-
-    <div class="paperclip-container">
-        <img src="img/Clippy.png" alt="Скрепка" class="paperclip" id="paperclip">
-        <div class="paperclip-tooltip">Ещё не время...</div>
-    </div>
 
     <section class="block8_1">
-        <h2>Поддержите наш проект!</h2>
-        <p>Нам очень важна ваша помощь</p>
-
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            const paperclip = document.getElementById('paperclip');
-            const paperclipContainer = document.querySelector('.paperclip-container');
-            const block8_1 = document.querySelector('.block8_1');
-            
-            let isBlockVisible = false;
-            let unhappyShown = false;
-            
-            paperclip.addEventListener('click', function() {
-                if (!isBlockVisible) {
-                alert('Ещё не время...');
-                }
-            });
-            
-            window.addEventListener('scroll', function() {
-                const blockPosition = block8_1.getBoundingClientRect();
-                const scrollPosition = window.scrollY + window.innerHeight;
-                
-                if (blockPosition.top < window.innerHeight && blockPosition.bottom > 0) {
-                if (!isBlockVisible) {
-                    isBlockVisible = true;
-                    paperclipContainer.style.bottom = '50%';
-                    paperclipContainer.style.right = '20%';
-                    paperclipContainer.style.transform = 'translate(50%, 50%)';
-                    paperclip.src = 'img/Clippy.png';
-                    unhappyShown = false;
-                }
-                } 
-                // Если проскролили дальше блока
-                else if (window.scrollY > blockPosition.bottom) {
-                if (isBlockVisible && !unhappyShown) {
-                    isBlockVisible = false;
-                    paperclipContainer.style.bottom = '20px';
-                    paperclipContainer.style.right = '20px';
-                    paperclipContainer.style.transform = 'none';
-                    paperclip.src = 'img/Clippysad.png'; 
-                    unhappyShown = true;
-                }
-                }
-                else if (window.scrollY < blockPosition.top) {
-                if (isBlockVisible) {
-                    isBlockVisible = false;
-                    paperclipContainer.style.bottom = '20px';
-                    paperclipContainer.style.right = '20px';
-                    paperclipContainer.style.transform = 'none';
-                    paperclip.src = 'img/Clippy.png';
-                    unhappyShown = false;
-                }
-                }
-            });
-            });
-        </script>
+        <h2>Нам очень важна ваша поддержка</h2>
+        <button>Поддержать</button>
     </section>
 
 

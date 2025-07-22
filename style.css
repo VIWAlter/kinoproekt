@@ -10,9 +10,13 @@
 body {
     background: fixed;
     background-image: url("img/фон.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     flex-direction: column;
     gap: 50px;
+    margin: 0;
+    padding: 0;
 }
 
 section {
@@ -24,25 +28,16 @@ section {
 }
 
 
-.block2 img, .block3 img, .block8 img, .block9 img, .block10 img , .block5 img  {
-            max-width: 100%;
+.block2 img, .block3 img, .block8 img, .block10 img , .block5 img  {
+            width: 100%;
             height: auto;
             object-fit: contain; 
         }
-
-        @media (max-width: 768px) {
-            body {
-                gap: 30px;
-                padding: 10px; 
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                gap: 20px;
-            }
-        }
-
+.block9 img {
+    width: 70%;
+    height: auto;
+    object-fit: contain; 
+}
 .content6 {
     display: flex;
     flex-direction: column;
@@ -161,6 +156,7 @@ section {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    font-weight: bold;
 }
 
 .block7left {
@@ -175,6 +171,8 @@ section {
 
 .block7leftup {
     font-size: 2.5vw;
+    width: 100%;
+    text-align: center;
 }
 
 .block7leftbot {
@@ -191,6 +189,7 @@ section {
     border: none;
     font-family: "Courier";
     font-size: 2vw;
+    font-weight: bold;
 }
 
 .block7leftbot button:hover {
@@ -207,7 +206,7 @@ section {
 }
 
 .crossword-container img {
-    width: 80%;
+    width: 100%;
     object-fit: cover;
 }
 
@@ -470,46 +469,6 @@ section {
     }
 }
 
-.paperclip-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-  transition: all 0.5s ease;
-}
-
-.paperclip {
-  width: 8vw;
-  height: 8vw;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  animation: float 3s ease-in-out infinite;
-}
-
-.paperclip:hover {
-  transform: scale(1.1);
-}
-
-.paperclip-tooltip {
-  position: absolute;
-  bottom: 100%;
-  right: 0;
-  background: rgba(0,0,0,0.8);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-size: 14px;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.paperclip:hover .paperclip-tooltip {
-  opacity: 1;
-}
-
 .block8_1 {
   min-height: 30vh;
   display: flex;
@@ -520,7 +479,11 @@ section {
   font-size: 3vw;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+.block8_1 button {
+    background-color: inherit;
+    border: 2px solid rgb(65, 65, 65);
+    width: 25%;
+    height: 3vw;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2vw;
 }
