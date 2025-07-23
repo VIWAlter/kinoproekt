@@ -76,7 +76,7 @@
 
         // Адаптивные границы по X
         const minBallX = Math.max(
-            vwToPx(5), 
+            vwToPx(15), 
             MIN_MARGIN + PLAYER_WIDTH
         );
         
@@ -170,6 +170,10 @@
     const animationInterval = setInterval(moveBall, 20);
 });
         </script>
+
+    <div class="nakleechka">
+        <img src="img/11.png" alt="nakl">
+    </div>
     </section>
     <section class="block2">
         <img src="img/2.png" alt="Сюжет">
@@ -178,7 +182,9 @@
         <img src="img/3.jpg" alt="а?">
     </section>
     <section class="block4">
-        <img src="img/4.png" alt="Фон" class="block4-bg">
+        <div class="fon">
+            <img src="img/4.png" alt="Фон" class="block4-bg">
+        </div>
         <div class="block4-video-container">
             <video controls class="block4-video">
                 <source src="img/0720.mp4" type="video/mp4">
@@ -190,16 +196,17 @@
         <div class="phone-container">
             <img src="img/телефон.png" alt="Телефон" class="phone">
             
-            <button class="accept-btn">ПРИНЯТЬ</button>
-        
-        <div class="modal">
+            <a href="https://planeta.ru/campaigns/232526" target="_blank" class="accept-btn">ПРИНЯТЬ</button>
+            </a>
+        </div>
+        <!-- <div class="modal">
             <div class="modal-content">
                 <p>Тут должен быть текст, но я не помню какой...</p>
                 <button class="close-modal">OK</button>
             </div>
-        </div>
+        </div> -->
 
-        <script>
+        <!-- <script>
             document.addEventListener('DOMContentLoaded', function() {
             const acceptBtn = document.querySelector('.accept-btn');
             const modal = document.querySelector('.modal');
@@ -224,7 +231,7 @@
                 }
             });
         });
-        </script>
+        </script> -->
     </section>
     <section class="block6">
         <div class="content6">
@@ -289,6 +296,12 @@
                 </button>
             </div>
         </div>
+        <div class="block7cntr"> 
+            <div class="kartinochki">
+                <p>Нажми на меня</p>
+                <img src="img/strelochka.png" alt="strelochka" class="strelochka">
+            </div> 
+        </div>
         <div class="block7right">
             <div class="crossword-container">
                 <img id="crosswordBase" src="img/biocrossword.png" alt="cross">
@@ -315,71 +328,10 @@
     <section class="block8">
         <img src="img/8.png" alt="а?">
     </section>
-    
-
-    <div class="paperclip-container">
-        <img src="img/Clippy.png" alt="Скрепка" class="paperclip" id="paperclip">
-        <div class="paperclip-tooltip">Ещё не время...</div>
-    </div>
 
     <section class="block8_1">
-        <h2>Поддержите наш проект!</h2>
-        <p>Нам очень важна ваша помощь</p>
-
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            const paperclip = document.getElementById('paperclip');
-            const paperclipContainer = document.querySelector('.paperclip-container');
-            const block8_1 = document.querySelector('.block8_1');
-            
-            let isBlockVisible = false;
-            let unhappyShown = false;
-            
-            paperclip.addEventListener('click', function() {
-                if (!isBlockVisible) {
-                alert('Ещё не время...');
-                }
-            });
-            
-            window.addEventListener('scroll', function() {
-                const blockPosition = block8_1.getBoundingClientRect();
-                const scrollPosition = window.scrollY + window.innerHeight;
-                
-                if (blockPosition.top < window.innerHeight && blockPosition.bottom > 0) {
-                if (!isBlockVisible) {
-                    isBlockVisible = true;
-                    paperclipContainer.style.bottom = '50%';
-                    paperclipContainer.style.right = '20%';
-                    paperclipContainer.style.transform = 'translate(50%, 50%)';
-                    paperclip.src = 'img/Clippy.png';
-                    unhappyShown = false;
-                }
-                } 
-                // Если проскролили дальше блока
-                else if (window.scrollY > blockPosition.bottom) {
-                if (isBlockVisible && !unhappyShown) {
-                    isBlockVisible = false;
-                    paperclipContainer.style.bottom = '20px';
-                    paperclipContainer.style.right = '20px';
-                    paperclipContainer.style.transform = 'none';
-                    paperclip.src = 'img/Clippysad.png'; 
-                    unhappyShown = true;
-                }
-                }
-                else if (window.scrollY < blockPosition.top) {
-                if (isBlockVisible) {
-                    isBlockVisible = false;
-                    paperclipContainer.style.bottom = '20px';
-                    paperclipContainer.style.right = '20px';
-                    paperclipContainer.style.transform = 'none';
-                    paperclip.src = 'img/Clippy.png';
-                    unhappyShown = false;
-                }
-                }
-            });
-            });
-        </script>
+        <h2>Нам очень важна ваша поддержка</h2>
+        <a href="https://planeta.ru/campaigns/232526" target="_blank">Поддержать</a>
     </section>
 
 
