@@ -375,9 +375,6 @@ section {
 }
 
 @media (max-width: 480px) {
-    .block4-video-container {
-        aspect-ratio: 4/3;
-    }
 
     .block4-video-container {
         width: 50%; 
