@@ -183,6 +183,11 @@ section {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    color: black;
+}
+
+.block7leftbot p{
+    color: black;
 }
 
 
